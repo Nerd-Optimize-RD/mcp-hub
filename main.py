@@ -158,7 +158,12 @@ app = FastAPI(title="MCP Hub API", version="1.0.0", description="NerdOptimize MC
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:8080",
+        "http://127.0.0.1:8080",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -235,11 +240,15 @@ async def get_status():
 
 # ─── API: GSC / GA4 OAuth ─────────────────────────────────────────────────────
 
+MAX_UPLOAD_BYTES = 100 * 1024  # 100 KB
+
 @app.post("/api/upload-secret/{service}")
 async def upload_secret(service: str, file: UploadFile = File(...)):
     if service not in ("gsc", "ga4"):
         raise HTTPException(400, f"Unknown service: {service}")
-    content = await file.read()
+    content = await file.read(MAX_UPLOAD_BYTES + 1)
+    if len(content) > MAX_UPLOAD_BYTES:
+        raise HTTPException(400, "File too large (max 100 KB)")
     try:
         data = json.loads(content)
     except json.JSONDecodeError:
@@ -500,23 +509,17 @@ async def refresh_status():
     gsc_test = await gsc_mcp.test_connection()
     results["gsc"] = "connected" if gsc_test["ok"] else "failed"
     if not gsc_test["ok"] and credential_store.get("gsc"):
-        creds = credential_store.get("gsc")
-        creds["status"] = "failed"
-        credential_store._write({**credential_store._read(), "gsc": creds})
+        credential_store.update_status("gsc", "failed")
 
     ga4_test = await ga4_mcp.test_connection()
     results["ga4"] = "connected" if ga4_test["ok"] else "failed"
     if not ga4_test["ok"] and credential_store.get("ga4"):
-        creds = credential_store.get("ga4")
-        creds["status"] = "failed"
-        credential_store._write({**credential_store._read(), "ga4": creds})
+        credential_store.update_status("ga4", "failed")
 
     ahrefs_test = await ahrefs_mcp.test_connection()
     results["ahrefs"] = "connected" if ahrefs_test["ok"] else "failed"
     if not ahrefs_test["ok"] and credential_store.get("ahrefs"):
-        creds = credential_store.get("ahrefs")
-        creds["status"] = "failed"
-        credential_store._write({**credential_store._read(), "ahrefs": creds})
+        credential_store.update_status("ahrefs", "failed")
 
     results["ngrok"] = "connected" if ngrok_manager.is_connected() else "disconnected"
     results["mcp_hub"] = "online" if ngrok_manager.is_connected() else "offline"

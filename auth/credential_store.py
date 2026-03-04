@@ -51,3 +51,10 @@ class CredentialStore:
     def has_service(self, service: str) -> bool:
         creds = self.get(service)
         return creds is not None and creds.get("status") == "connected"
+
+    def update_status(self, service: str, status: str) -> None:
+        """Update status for a service without replacing full credential data."""
+        all_creds = self._read()
+        if service in all_creds:
+            all_creds[service]["status"] = status
+            self._write(all_creds)

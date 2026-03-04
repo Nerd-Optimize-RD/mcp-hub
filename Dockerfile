@@ -15,6 +15,6 @@ RUN mkdir -p /data
 
 RUN chmod +x start.sh
 
-EXPOSE 8000 8080 8085
+EXPOSE 8000 8080
 
 CMD ["sh", "start.sh"]
