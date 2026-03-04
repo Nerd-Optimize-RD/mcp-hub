@@ -1,0 +1,72 @@
+NerdOptimize Restricted License
+Version 1.0, 2026
+
+Copyright (c) 2026 NerdOptimize
+Website: https://nerdoptimize.com
+
+─────────────────────────────────────────────────────────────────
+OWNERSHIP
+─────────────────────────────────────────────────────────────────
+This software, including all source code, documentation, design,
+and associated materials ("the Software"), is the exclusive
+intellectual property of NerdOptimize.
+
+─────────────────────────────────────────────────────────────────
+PERMITTED USES
+─────────────────────────────────────────────────────────────────
+The following uses are permitted WITHOUT prior written permission:
+
+1. WORKSHOP PARTICIPANTS
+   Individuals who have received this software as part of an
+   official NerdOptimize workshop or training event may:
+   - Install and run the software on their personal machine
+   - Use the software for personal or internal business purposes
+   - Modify the software for their own use
+
+2. PERSONAL & INTERNAL BUSINESS USE
+   Any individual may use this software for non-commercial
+   personal projects or internal business operations.
+
+─────────────────────────────────────────────────────────────────
+PROHIBITED USES
+─────────────────────────────────────────────────────────────────
+The following uses are STRICTLY PROHIBITED without prior written
+permission from NerdOptimize:
+
+1. Selling, licensing, or sublicensing this software or any
+   derivative work to any third party.
+
+2. Distributing this software publicly (e.g., publishing to
+   GitHub, npm, PyPI, or any public repository) without explicit
+   written approval from NerdOptimize.
+
+3. Using this software as the basis of a competing product
+   or service.
+
+4. Removing or altering any copyright notices, "Powered by
+   NerdOptimize" labels, or attribution markers present in
+   the source code or UI.
+
+5. Teaching or re-distributing this software in a paid course,
+   workshop, or training program without written permission.
+
+─────────────────────────────────────────────────────────────────
+REQUIRED ATTRIBUTION
+─────────────────────────────────────────────────────────────────
+Any permitted use must retain the following notice visibly:
+
+    "Powered by NerdOptimize — https://nerdoptimize.com"
+
+─────────────────────────────────────────────────────────────────
+DISCLAIMER OF WARRANTY
+─────────────────────────────────────────────────────────────────
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED. NERDOPTIMIZE SHALL NOT BE LIABLE FOR ANY
+CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF
+THIS SOFTWARE.
+
+─────────────────────────────────────────────────────────────────
+CONTACT FOR PERMISSIONS
+─────────────────────────────────────────────────────────────────
+For licensing inquiries or special permissions, contact:
+hello@nerdoptimize.com

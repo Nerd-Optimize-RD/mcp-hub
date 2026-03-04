@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP Hub — Setup Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <!-- ─── HEADER ─────────────────────────────── -->
+    <header class="header">
+      <div class="header-logo">
+        <img src="./main-logo-negative.png" alt="NerdOptimize" class="header-logo-img" onerror="this.onerror=null;this.style.display='none';var f=this.nextElementSibling;if(f)f.style.display='flex';">
+        <div class="header-logo-fallback" style="display:none;align-items:center;gap:8px;">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#4c63a6"/><path d="M7 14C7 10.134 10.134 7 14 7V7C17.866 7 21 10.134 21 14V14C21 17.866 17.866 21 14 21V21" stroke="white" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="14" r="3" fill="white"/></svg>
+          <span class="header-brand">NerdOptimize</span>
+        </div>
+      </div>
+      <div class="header-title">
+        <span class="header-title-mcp">MCP </span> Hub Setup Panel
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="btn-refresh" title="Refresh หน้า">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.65 2.35A8 8 0 1 0 15 8h-2a6 6 0 1 1-1.06-3.4L10 6h5V1l-1.35 1.35Z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ─── MAIN ────────────────────────────────── -->
+    <main class="main">
+
+      <!-- ══ GOOGLE SEARCH CONSOLE ══════════════ -->
+      <section class="card" id="section-gsc">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="svc-icon gsc-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="#4285f4" stroke-width="1.5" fill="none"/><path d="M5 8a3 3 0 1 1 6 0 3 3 0 0 1-6 0Z" fill="#4285f4"/></svg>
+            </span>
+            Google Search Console
+          </div>
+          <div class="status-badge" id="badge-gsc">
+            <span class="dot dot-red"></span>
+            <span class="badge-text">ยังไม่เชื่อมต่อ</span>
+          </div>
+        </div>
+
+        <div class="step-block">
+          <div class="step-label">Step 1 — Client Secret</div>
+          <div class="input-row">
+            <label class="upload-btn" id="gsc-upload-label">
+              <input type="file" id="gsc-file" accept=".json" hidden>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 4l3-3 3 3M2 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <span id="gsc-file-name">Upload client_secret.json</span>
+            </label>
+            <button class="btn btn-danger btn-sm" id="gsc-delete-secret" title="Delete file">
+              <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 3h8M5 3V2h2v1M3 3l.5 7h5L9 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="step-block">
+          <div class="step-label">Step 2 — OAuth</div>
+          <div class="input-row">
+            <button class="btn btn-primary btn-full" id="gsc-oauth-btn">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1a6 6 0 1 0 0 12A6 6 0 0 0 7 1Z" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              Connect Google Account — GSC
+            </button>
+            <button class="btn btn-ghost btn-sm" id="gsc-disconnect" title="Disconnect">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 4L4 8M4 4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ GOOGLE ANALYTICS 4 ════════════════ -->
+      <section class="card" id="section-ga4">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="svc-icon ga4-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16"><rect x="1" y="9" width="3" height="6" rx="1" fill="#fbbc04"/><rect x="6" y="5" width="3" height="10" rx="1" fill="#fbbc04"/><rect x="11" y="1" width="3" height="14" rx="1" fill="#fbbc04"/></svg>
+            </span>
+            Google Analytics 4
+          </div>
+          <div class="status-badge" id="badge-ga4">
+            <span class="dot dot-red"></span>
+            <span class="badge-text">ยังไม่เชื่อมต่อ</span>
+          </div>
+        </div>
+
+        <div class="step-block">
+          <div class="step-label">Step 1 — Client Secret</div>
+          <div class="input-row">
+            <label class="upload-btn" id="ga4-upload-label">
+              <input type="file" id="ga4-file" accept=".json" hidden>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 4l3-3 3 3M2 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <span id="ga4-file-name">Upload client_secret.json</span>
+            </label>
+            <button class="btn btn-danger btn-sm" id="ga4-delete-secret" title="Delete file">
+              <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 3h8M5 3V2h2v1M3 3l.5 7h5L9 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="step-block">
+          <div class="step-label">Step 2 — OAuth</div>
+          <div class="input-row">
+            <button class="btn btn-primary btn-full" id="ga4-oauth-btn">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1a6 6 0 1 0 0 12A6 6 0 0 0 7 1Z" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M7 4v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              Connect Google Account — GA4
+            </button>
+            <button class="btn btn-ghost btn-sm" id="ga4-disconnect" title="Disconnect">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 4L4 8M4 4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ AHREFS ═══════════════════════════ -->
+      <section class="card" id="section-ahrefs">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="svc-icon ahrefs-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 2L14 13H2L8 2Z" stroke="#2ecc71" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg>
+            </span>
+            Ahrefs
+          </div>
+          <div class="status-badge" id="badge-ahrefs">
+            <span class="dot dot-red"></span>
+            <span class="badge-text">ยังไม่เชื่อมต่อ</span>
+          </div>
+        </div>
+
+        <div class="step-block">
+          <div class="field-label">API Key</div>
+          <div class="input-row">
+            <input
+              type="text"
+              class="text-input"
+              id="ahrefs-key"
+              placeholder="ahk_xxxxxxxxxxxxxxxx"
+              autocomplete="off"
+            >
+            <button class="btn btn-ghost btn-sm" id="ahrefs-toggle-key" title="เปิดดู">
+              <svg id="eye-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7s2.5-4 6-4 6 4 6 4-2.5 4-6 4-6-4-6-4Z" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
+            </button>
+            <button class="btn btn-primary btn-sm" id="ahrefs-save-btn">Save</button>
+            <button class="btn btn-ghost btn-sm" id="ahrefs-disconnect" title="Disconnect">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 4L4 8M4 4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ NGROK ═════════════════════════════ -->
+      <section class="card" id="section-ngrok">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="svc-icon ngrok-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M10 5l3 3-3 3" stroke="#4c63a6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            ngrok
+          </div>
+          <div class="status-badge" id="badge-ngrok">
+            <span class="dot dot-red"></span>
+            <span class="badge-text">ยังไม่เชื่อมต่อ</span>
+          </div>
+        </div>
+
+        <div class="step-block">
+          <div class="field-row">
+            <label class="field-label-inline">Auth Token</label>
+            <div class="input-row flex-1">
+              <input type="text" class="text-input" id="ngrok-token" placeholder="ใส่ auth token" autocomplete="off">
+              <button class="btn btn-ghost btn-sm" id="ngrok-toggle-token" title="เปิดดู">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7s2.5-4 6-4 6 4 6 4-2.5 4-6 4-6-4-6-4Z" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="field-row" style="margin-top:8px;">
+            <label class="field-label-inline">Static Domain</label>
+            <div class="input-row flex-1">
+              <input type="text" class="text-input" id="ngrok-domain" placeholder="your-domain.ngrok-free.app" autocomplete="off">
+              <button class="btn btn-ghost btn-sm" id="ngrok-disconnect" title="Disconnect">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 4L4 8M4 4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MCP URL Box -->
+        <div class="url-box" id="mcp-url-box" style="display:none;">
+          <div class="url-label">MCP URL</div>
+          <div class="url-row">
+            <span class="url-text" id="mcp-url-text">—</span>
+            <button class="btn btn-primary btn-sm" id="copy-url-btn">Copy</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ ACTION BAR ════════════════════════ -->
+      <div class="action-bar">
+        <button class="btn btn-primary btn-connect" id="btn-connect-all">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1v13M1 7.5h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Connect &amp; Start MCP Hub
+        </button>
+        <button class="btn btn-ghost btn-stop-connector" id="btn-stop-connector" title="หยุด Connector ชั่วคราว">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          Stop Connector
+        </button>
+        <button class="btn btn-ghost btn-icon-only" id="btn-refresh-2" title="Refresh">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.65 2.35A8 8 0 1 0 15 8h-2a6 6 0 1 1-1.06-3.4L10 6h5V1l-1.35 1.35Z" fill="currentColor"/></svg>
+        </button>
+        <button class="btn btn-danger" id="btn-delete-all">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M5 3.5V2h4v1.5M3 3.5l.7 8.5h6.6L11 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Delete All
+        </button>
+      </div>
+
+      <!-- ══ CONNECTOR LOG ═══════════════════════ -->
+      <section class="card connector-log" id="connector-log-section">
+        <div class="card-head">
+          <div class="card-title">Connector Log</div>
+        </div>
+        <div class="connector-log-summary" id="connector-log-summary">
+          <span id="connector-log-count">0 เครื่องที่ต่อเข้ามา</span>
+        </div>
+        <div class="connector-log-list" id="connector-log-list">
+          <div class="connector-log-empty" id="connector-log-empty">ยังไม่มี connection</div>
+        </div>
+      </section>
+
+      <!-- ══ STATUS PANEL ══════════════════════ -->
+      <section class="status-panel">
+        <div class="status-panel-title">● MCP Hub Status</div>
+
+        <div class="status-rows">
+          <div class="status-row" id="srow-gsc">
+            <span class="dot dot-red"></span>
+            <span class="srow-label">GSC</span>
+            <span class="srow-msg">ยังไม่เชื่อมต่อ</span>
+          </div>
+          <div class="status-row" id="srow-ga4">
+            <span class="dot dot-red"></span>
+            <span class="srow-label">GA4</span>
+            <span class="srow-msg">ยังไม่เชื่อมต่อ</span>
+          </div>
+          <div class="status-row" id="srow-ahrefs">
+            <span class="dot dot-red"></span>
+            <span class="srow-label">Ahrefs</span>
+            <span class="srow-msg">ยังไม่เชื่อมต่อ</span>
+          </div>
+          <div class="status-row" id="srow-ngrok">
+            <span class="dot dot-red"></span>
+            <span class="srow-label">ngrok</span>
+            <span class="srow-msg">ยังไม่เชื่อมต่อ</span>
+          </div>
+          <div class="status-row status-row-last" id="srow-hub">
+            <span class="dot dot-red"></span>
+            <span class="srow-label">MCP Hub</span>
+            <span class="srow-msg">Offline</span>
+          </div>
+        </div>
+
+        <!-- Online bar -->
+        <div class="online-bar" id="online-bar">
+          <div class="online-pill" id="online-pill">● OFFLINE</div>
+          <div class="svc-chips">
+            <span class="svc-chip" id="chip-gsc">GSC ❌</span>
+            <span class="svc-chip" id="chip-ga4">GA4 ❌</span>
+            <span class="svc-chip" id="chip-ahrefs">Ahrefs ❌</span>
+            <span class="svc-chip" id="chip-ngrok">ngrok ❌</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ─── FOOTER ─────────────────────────────── -->
+    <footer class="footer">
+      Powered by NerdOptimize — <a href="https://nerdoptimize.com" target="_blank">nerdoptimize.com</a>
+    </footer>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- ─── TOAST ─────────────────────────────────── -->
+  <div id="toast-container"></div>
+
+  <!-- ─── CONFIRM DIALOG ────────────────────────── -->
+  <div class="overlay" id="confirm-overlay" style="display:none;">
+    <div class="confirm-dialog">
+      <div class="confirm-title">ยืนยันการลบ</div>
+      <div class="confirm-body" id="confirm-body">คุณแน่ใจว่าต้องการลบ credentials ทั้งหมด?</div>
+      <div class="confirm-actions">
+        <button class="btn btn-ghost" id="confirm-cancel">ยกเลิก</button>
+        <button class="btn btn-danger" id="confirm-ok">ลบทั้งหมด</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

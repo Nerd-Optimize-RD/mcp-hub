@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  mcp-hub:
+    build: .
+    container_name: mcp-hub
+    ports:
+      - "8000:8000"   # FastAPI backend
+      - "8080:8080"   # Web UI
+      - "8085:8085"   # OAuth callback (localhost)
+    volumes:
+      - mcp-data:/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+volumes:
+  mcp-data:
+    driver: local
