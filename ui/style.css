@@ -390,11 +390,38 @@ a:hover { color: var(--btn-hover); text-decoration: underline; }
   font-size: 12px;
 }
 
+.btn-connect.btn-connect-online {
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid rgba(46, 204, 113, 0.5);
+  color: var(--success);
+}
+
+.btn-connect.btn-connect-online:disabled {
+  opacity: 0.9;
+}
+
 .btn-stop-connector {
   flex: 0.5;
   min-width: 0;
   padding: 8px 12px;
   font-size: 12px;
+}
+
+.btn-stop-connector.btn-stop-disabled {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.btn-stop-connector:not(.btn-stop-disabled):not(:disabled) {
+  background: #e67e22;
+  border: none;
+  color: #fff;
+}
+
+.btn-stop-connector:not(.btn-stop-disabled):not(:disabled):hover {
+  background: #eb9849;
 }
 
 /* ─── Status Panel ───────────────────────────────────────────────── */

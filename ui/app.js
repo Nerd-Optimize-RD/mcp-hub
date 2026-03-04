@@ -58,8 +58,8 @@ const STATUS_LABELS = {
   connected: 'เชื่อมต่อแล้ว',
   failed:    'เชื่อมไม่สำเร็จ',
   disconnected: 'ยังไม่เชื่อมต่อ',
-  offline:   'Offline',
-  online:    'Online',
+  offline:   'ออฟไลน์',
+  online:    'ออนไลน์',
 };
 
 function updateBadge(id, status) {
@@ -147,6 +147,34 @@ function updateOnlineBar(isOnline) {
   }
 }
 
+function updateConnectAllButton(isOnline) {
+  const btn = document.getElementById('btn-connect-all');
+  if (!btn) return;
+  const CONNECT_ALL_ICON = '<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1v13M1 7.5h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  if (isOnline) {
+    btn.disabled = true;
+    btn.title = 'MCP Hub is already running. Use Stop Connector to pause.';
+    btn.innerHTML = `${CHECK_ICON} MCP Hub Online`;
+    btn.classList.add('btn-connect-online');
+  } else {
+    btn.disabled = false;
+    btn.title = '';
+    btn.innerHTML = `${CONNECT_ALL_ICON} Connect &amp; Start MCP Hub`;
+    btn.classList.remove('btn-connect-online');
+  }
+}
+
+function updateStopConnectorButton(isOnline) {
+  const btn = document.getElementById('btn-stop-connector');
+  if (!btn) return;
+  btn.disabled = !isOnline;
+  if (isOnline) {
+    btn.classList.remove('btn-stop-disabled');
+  } else {
+    btn.classList.add('btn-stop-disabled');
+  }
+}
+
 // ─── Refresh Status ───────────────────────────────────────────────────────────
 
 async function refreshStatus() {
@@ -201,8 +229,10 @@ async function refreshStatus() {
 
     // Hub
     const hubOnline = data.mcp_hub.online;
-    updateStatusRow('hub', hubOnline ? 'online' : 'offline', hubOnline ? 'Online' : 'Offline');
+    updateStatusRow('hub', hubOnline ? 'online' : 'offline', hubOnline ? 'ออนไลน์' : 'ออฟไลน์');
     updateOnlineBar(hubOnline);
+    updateConnectAllButton(hubOnline);
+    updateStopConnectorButton(hubOnline);
 
   } catch (e) {
     console.warn('Status refresh failed:', e.message);
@@ -534,8 +564,10 @@ document.getElementById('btn-stop-connector').addEventListener('click', async ()
     updateCard('ngrok', 'disconnected');
     updateStatusRow('ngrok', 'disconnected');
     updateChip('ngrok', 'disconnected');
-    updateStatusRow('hub', 'offline', 'Offline');
+    updateStatusRow('hub', 'offline', 'ออฟไลน์');
     updateOnlineBar(false);
+    updateConnectAllButton(false);
+    updateStopConnectorButton(false);
     document.getElementById('mcp-url-box').style.display = 'none';
     toast('Connector stopped', 'info');
   } catch (err) {
@@ -552,7 +584,6 @@ document.getElementById('btn-connect-all').addEventListener('click', async () =>
   let ngrokToken  = document.getElementById('ngrok-token').value.trim();
   let ngrokDomain = document.getElementById('ngrok-domain').value.trim();
 
-  // ถ้า token เป็นค่าที่ mask ไว้ (มี x ต่อกันหลายตัว เช่น 3ASuxxx...xxx3123) ให้ใช้ credentials ที่เก็บไว้แทน
   if (/^.{4}x{6,}.{4}$/.test(ngrokToken)) {
     try {
       const preview = await apiFetch('/api/credentials/ngrok/preview?reveal=true');
@@ -561,6 +592,7 @@ document.getElementById('btn-connect-all').addEventListener('click', async () =>
   }
 
   setLoading(btn, true, 'Connecting...');
+  let hubOnline = false;
 
   try {
     const data = await apiFetch('/api/connect-all', {
@@ -578,7 +610,7 @@ document.getElementById('btn-connect-all').addEventListener('click', async () =>
         const status = results[svc].status;
         updateBadge(svc, status);
         updateCard(svc, status);
-        updateStatusRow(svc, status, results[svc].message || null);
+        updateStatusRow(svc, status);
         updateChip(svc, status);
         if (svc === 'ahrefs' && status === 'connected') loadAhrefsPreview(false);
         if (svc === 'ngrok' && status === 'connected') loadNgrokPreview(false);
@@ -587,13 +619,14 @@ document.getElementById('btn-connect-all').addEventListener('click', async () =>
 
     if (results.mcp_hub) {
       const hubStatus = results.mcp_hub.status;
-      updateStatusRow('hub', hubStatus, hubStatus === 'online' ? 'Online' : results.mcp_hub.message || 'Offline');
-      updateOnlineBar(hubStatus === 'online');
+      hubOnline = hubStatus === 'online';
+      updateStatusRow('hub', hubStatus, hubOnline ? 'ออนไลน์' : (results.mcp_hub.message || 'ออฟไลน์'));
+      updateOnlineBar(hubOnline);
     }
 
     if (data.mcp_url) {
       showMcpUrl(data.mcp_url);
-      toast(`MCP Hub is ONLINE 🎉 — URL copied to clipboard`, 'success', 5000);
+      toast(`MCP Hub is ONLINE — URL copied to clipboard`, 'success', 5000);
       navigator.clipboard.writeText(data.mcp_url).catch(() => {});
     } else if (!data.ok) {
       toast('Some services failed. Check status panel.', 'error');
@@ -602,6 +635,8 @@ document.getElementById('btn-connect-all').addEventListener('click', async () =>
     toast(`Connect failed: ${err.message}`, 'error');
   } finally {
     setLoading(btn, false);
+    updateConnectAllButton(hubOnline);
+    updateStopConnectorButton(hubOnline);
   }
 });
 
@@ -641,6 +676,8 @@ document.getElementById('confirm-ok').addEventListener('click', async () => {
       }
     }
     updateOnlineBar(false);
+    updateConnectAllButton(false);
+    updateStopConnectorButton(false);
     document.getElementById('mcp-url-box').style.display = 'none';
     document.getElementById('ahrefs-key').value = '';
     document.getElementById('ngrok-token').value = '';
