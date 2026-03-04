@@ -4,30 +4,29 @@ This software ("MCP Hub") is developed and distributed by NerdOptimize
 for educational and workshop purposes.
 
 ## Data Privacy
-- ข้อมูลที่ดึงมาจาก Google Search Console, Google Analytics 4 และ Ahrefs
-  เป็นข้อมูลของผู้ใช้แต่ละท่านทั้งสิ้น
-- NerdOptimize ไม่มีการเก็บ ส่งต่อ หรือเข้าถึงข้อมูลของผู้ใช้แต่อย่างใด
-- Credentials ทั้งหมดถูกเก็บไว้ใน Docker Volume บนเครื่องของผู้ใช้เท่านั้น
+- All data retrieved from Google Search Console, Google Analytics 4, and Ahrefs belongs solely to each user
+- NerdOptimize does not store, transmit, or access user data in any way
+- All credentials are stored in Docker volumes on the user's machine only
 
 ## Third-Party Services
-- การใช้งาน Google APIs อยู่ภายใต้ Google Terms of Service
+- Use of Google APIs is subject to Google Terms of Service  
   https://developers.google.com/terms
-- การใช้งาน Ahrefs API อยู่ภายใต้ Ahrefs Terms of Service
+- Use of Ahrefs API is subject to Ahrefs Terms of Service  
   https://ahrefs.com/terms
-- การใช้งาน ngrok อยู่ภายใต้ ngrok Terms of Service
+- Use of ngrok is subject to ngrok Terms of Service  
   https://ngrok.com/tos
-- ผู้ใช้มีหน้าที่รับผิดชอบในการปฏิบัติตามข้อกำหนดของแต่ละ service
+- Users are responsible for complying with each service's terms
 
 ## Limitation of Liability
-NerdOptimize ไม่รับผิดชอบต่อความเสียหายใด ๆ ที่เกิดขึ้นจาก:
-- การใช้งาน software นี้
-- ความผิดพลาดในการตั้งค่า credentials
-- การสูญหายของข้อมูล
-- การเปลี่ยนแปลง API ของ Google, Ahrefs หรือ ngrok
+NerdOptimize is not liable for any damages arising from:
+- Use of this software
+- Credential misconfiguration
+- Data loss
+- API changes by Google, Ahrefs, or ngrok
 
 ## Workshop Distribution
-Software นี้แจกเฉพาะผู้เข้าร่วม NerdOptimize Workshop เท่านั้น
-ดู LICENSE สำหรับข้อกำหนดการใช้งานฉบับเต็ม
+This software is distributed only to NerdOptimize Workshop participants.  
+See LICENSE for full terms of use.
 
 ---
 Powered by NerdOptimize © 2026 — https://nerdoptimize.com
