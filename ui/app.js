@@ -631,6 +631,9 @@ document.getElementById('btn-connect-all').addEventListener('click', async () =>
     } else if (!data.ok) {
       toast('Some services failed. Check status panel.', 'error');
     }
+    if (hubOnline) {
+      refreshConnectorLog();
+    }
   } catch (err) {
     toast(`Connect failed: ${err.message}`, 'error');
   } finally {
@@ -727,6 +730,17 @@ function init() {
 
   // Connector log refresh every 10 seconds
   setInterval(refreshConnectorLog, 10_000);
+
+  // Clear connector log history
+  document.getElementById('btn-clear-connector-log')?.addEventListener('click', async () => {
+    try {
+      await apiFetch('/api/connector-log/clear', { method: 'POST' });
+      refreshConnectorLog();
+      toast('Connector log cleared', 'info');
+    } catch (err) {
+      toast(`Error: ${err.message}`, 'error');
+    }
+  });
 }
 
 init();

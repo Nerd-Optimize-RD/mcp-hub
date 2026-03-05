@@ -8,7 +8,7 @@ from google_auth_oauthlib.flow import Flow
 from auth.credential_store import CredentialStore
 
 SCOPES = {
-    "gsc": ["https://www.googleapis.com/auth/webmasters.readonly"],
+    "gsc": ["https://www.googleapis.com/auth/webmasters"],
     "ga4": ["https://www.googleapis.com/auth/analytics.readonly"],
 }
 

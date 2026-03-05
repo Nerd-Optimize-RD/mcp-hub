@@ -78,7 +78,13 @@ Copy the URL from the Setup Panel to connect with Claude or ChatGPT
 
 ### Google Search Console
 - `list_sites` — list all properties
-- `get_search_analytics` — get clicks, impressions, CTR, position
+- `get_search_analytics` — get clicks, impressions, CTR, position (supports web, image, video, news, discover, googleNews)
+- `inspect_url` — inspect a URL's index status in Google
+- `get_site` — get property details
+- `list_sitemaps` — list submitted sitemaps
+- `get_sitemap` — get sitemap details
+- `submit_sitemap` — submit a sitemap
+- `delete_sitemap` — delete a sitemap
 
 ### Google Analytics 4
 - `list_ga4_properties` — list all GA4 properties **(start here)**

@@ -25,6 +25,7 @@ Clear structure with separation of concerns.
 **OAuth**
 - OAuth state parameter used to prevent CSRF
 - Client secret files removed after successful OAuth
+- GSC uses `webmasters` scope (read/write) for full API support, including sitemap submit/delete
 
 **Credentials**
 - Credentials not exposed unnecessarily; masked values used where appropriate

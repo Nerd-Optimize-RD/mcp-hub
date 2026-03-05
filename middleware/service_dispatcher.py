@@ -11,6 +11,12 @@ TOOL_REGISTRY: dict[str, tuple] = {
     # GSC tools
     "list_sites": (gsc_mcp, gsc_mcp.list_sites),
     "get_search_analytics": (gsc_mcp, gsc_mcp.get_search_analytics),
+    "inspect_url": (gsc_mcp, gsc_mcp.inspect_url),
+    "get_site": (gsc_mcp, gsc_mcp.get_site),
+    "list_sitemaps": (gsc_mcp, gsc_mcp.list_sitemaps),
+    "get_sitemap": (gsc_mcp, gsc_mcp.get_sitemap),
+    "submit_sitemap": (gsc_mcp, gsc_mcp.submit_sitemap),
+    "delete_sitemap": (gsc_mcp, gsc_mcp.delete_sitemap),
     # GA4 tools
     "list_ga4_properties": (ga4_mcp, ga4_mcp.list_ga4_properties),
     "get_recommended_analytics": (ga4_mcp, ga4_mcp.get_recommended_analytics),
@@ -49,6 +55,12 @@ TOOL_REGISTRY: dict[str, tuple] = {
 TOOL_SERVICE_MAP: dict[str, str] = {
     "list_sites": "gsc",
     "get_search_analytics": "gsc",
+    "inspect_url": "gsc",
+    "get_site": "gsc",
+    "list_sitemaps": "gsc",
+    "get_sitemap": "gsc",
+    "submit_sitemap": "gsc",
+    "delete_sitemap": "gsc",
     "list_ga4_properties": "ga4",
     "get_recommended_analytics": "ga4",
     "get_ga4_data": "ga4",

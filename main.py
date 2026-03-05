@@ -22,7 +22,7 @@ from mcp.types import (
 
 from auth.credential_store import CredentialStore
 from auth.oauth_handler import OAuthHandler, handle_callback as oauth_handle_callback
-from connector_log import get_log, log_connection_end, log_connection_start
+from connector_log import clear_log, get_log, log_connection_end, log_connection_start
 from middleware.service_dispatcher import TOOL_REGISTRY, TOOL_SERVICE_MAP, dispatch
 from ngrok import ngrok_manager
 from services import ahrefs_mcp, ga4_mcp, gsc_mcp
@@ -76,11 +76,7 @@ async def handle_list_tools() -> list[Tool]:
 
     if _is_service_connected("gsc"):
         tools += [
-            Tool(
-                name="list_sites",
-                description="List all Google Search Console properties accessible to this account.",
-                inputSchema={"type": "object", "properties": {}, "required": []},
-            ),
+            Tool(name="list_sites", description="List all Google Search Console properties accessible to this account.", inputSchema={"type": "object", "properties": {}, "required": []}),
             Tool(
                 name="get_search_analytics",
                 description="Get search analytics data (clicks, impressions, CTR, position) from Google Search Console.",
@@ -90,13 +86,85 @@ async def handle_list_tools() -> list[Tool]:
                         "siteUrl": {"type": "string", "description": "Property URL e.g. https://example.com/"},
                         "startDate": {"type": "string", "description": "Start date YYYY-MM-DD"},
                         "endDate": {"type": "string", "description": "End date YYYY-MM-DD"},
-                        "dimensions": {"type": "array", "items": {"type": "string"}, "description": "query, page, country, device, date"},
-                        "type": {"type": "string", "description": "web, image, video, news", "default": "web"},
+                        "dimensions": {"type": "array", "items": {"type": "string"}, "description": "query, page, country, device, date, searchAppearance, hour"},
+                        "type": {"type": "string", "description": "web, image, video, news, googleNews, discover", "default": "web"},
                         "dimensionFilterGroups": {"type": "array", "items": {"type": "object"}},
+                        "aggregationType": {"type": "string", "description": "auto, byProperty, byPage"},
+                        "dataState": {"type": "string", "description": "all, final, hourly_all"},
                         "rowLimit": {"type": "integer", "default": 1000, "description": "Max rows (default 1000, max 25000)"},
                         "startRow": {"type": "integer", "default": 0},
                     },
                     "required": ["siteUrl", "startDate", "endDate"],
+                },
+            ),
+            Tool(
+                name="inspect_url",
+                description="Inspect a URL's index status in Google. Check if the page is indexed and any issues.",
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "inspectionUrl": {"type": "string", "description": "Full URL to inspect"},
+                        "siteUrl": {"type": "string", "description": "Property URL e.g. https://example.com/"},
+                        "languageCode": {"type": "string", "default": "en-US"},
+                    },
+                    "required": ["inspectionUrl", "siteUrl"],
+                },
+            ),
+            Tool(
+                name="get_site",
+                description="Get detailed information about a specific Search Console property.",
+                inputSchema={
+                    "type": "object",
+                    "properties": {"siteUrl": {"type": "string"}},
+                    "required": ["siteUrl"],
+                },
+            ),
+            Tool(
+                name="list_sitemaps",
+                description="List all sitemaps submitted for a site.",
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "siteUrl": {"type": "string"},
+                        "sitemapIndex": {"type": "string", "description": "Optional sitemap index URL to filter"},
+                    },
+                    "required": ["siteUrl"],
+                },
+            ),
+            Tool(
+                name="get_sitemap",
+                description="Get information about a specific sitemap.",
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "siteUrl": {"type": "string"},
+                        "feedpath": {"type": "string", "description": "Sitemap path e.g. https://example.com/sitemap.xml"},
+                    },
+                    "required": ["siteUrl", "feedpath"],
+                },
+            ),
+            Tool(
+                name="submit_sitemap",
+                description="Submit a sitemap to Google Search Console.",
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "siteUrl": {"type": "string"},
+                        "feedpath": {"type": "string", "description": "Sitemap URL e.g. https://example.com/sitemap.xml"},
+                    },
+                    "required": ["siteUrl", "feedpath"],
+                },
+            ),
+            Tool(
+                name="delete_sitemap",
+                description="Delete a sitemap from Search Console.",
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "siteUrl": {"type": "string"},
+                        "feedpath": {"type": "string"},
+                    },
+                    "required": ["siteUrl", "feedpath"],
                 },
             ),
         ]
@@ -156,6 +224,28 @@ async def handle_call_tool(name: str, arguments: dict | None) -> list[TextConten
 
 app = FastAPI(title="MCP Hub API", version="1.0.0", description="NerdOptimize MCP Hub")
 
+
+class SuppressDoubleSendMiddleware:
+    """Suppress RuntimeError when ASGI send is called after response already completed (e.g. client disconnect)."""
+
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        if scope.get("type") != "http":
+            await self.app(scope, receive, send)
+            return
+
+        async def safe_send(message):
+            try:
+                await send(message)
+            except RuntimeError as e:
+                if "after response already completed" not in str(e):
+                    raise
+
+        await self.app(scope, receive, safe_send)
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -168,6 +258,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(SuppressDoubleSendMiddleware)
 
 # SSE Transport
 sse_transport = SseServerTransport("/mcp-hub/messages")
@@ -414,6 +505,13 @@ async def delete_all_credentials():
 @app.get("/api/connector-log")
 async def connector_log():
     return get_log()
+
+
+@app.post("/api/connector-log/clear")
+async def connector_log_clear():
+    """Clear all connector log history."""
+    clear_log()
+    return {"ok": True, "message": "Connector log cleared"}
 
 
 @app.post("/api/connector/stop")
